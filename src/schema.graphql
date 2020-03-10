@@ -1,0 +1,29 @@
+type Query {
+  me: User
+  user(id: ID!): User
+  posts: [Post],
+  reviews: [Review],
+}
+
+type Post {
+  id: ID!
+  title: String
+  description: String
+  userId: String
+  user: User
+  reviews: [Review]
+}
+
+type User {
+  id: ID!
+  username: String
+  posts: [Post]
+  reviews: [Review]
+}
+
+type Review {
+  id: ID!
+  text: String
+  userId: String
+  postId: String
+}

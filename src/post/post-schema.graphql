@@ -1,0 +1,13 @@
+type Query {
+  posts: [Post],
+  Post: {
+    getUser: IUser,
+  }
+}
+
+type Post {
+  id: ID!
+  title: String
+  description: String
+  user: IUser
+}

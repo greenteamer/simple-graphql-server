@@ -1,0 +1,56 @@
+export default {
+  "users": [
+    {
+      "id": "1",
+      "username": "username 1"
+    },
+    {
+      "id": "2",
+      "username": "username 2"
+    },
+    {
+      "id": "3",
+      "username": "username 3"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "userId": "1",
+      "title": "Post 1",
+      "description": "Description 1"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "title": "Post 2",
+      "description": "Description 2"
+    },
+    {
+      "id": "3",
+      "userId": "3",
+      "title": "Post 3",
+      "description": "Description 3"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "1",
+      "userId": "1",
+      "postId": "1",
+      "text": "text 1"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "postId": "1",
+      "text": "text 2"
+    },
+    {
+      "id": "3",
+      "userId": "3",
+      "postId": "3",
+      "text": "text 3"
+    }
+  ]
+}
