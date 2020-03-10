@@ -7,23 +7,25 @@ type Query {
 
 type Post {
   id: ID!
-  title: String
+  title: String!
   description: String
-  userId: String
-  user: User
+  userId: String!
+  user: User!
   reviews: [Review]
 }
 
 type User {
   id: ID!
-  username: String
+  username: String!
   posts: [Post]
   reviews: [Review]
 }
 
 type Review {
   id: ID!
-  text: String
-  userId: String
-  postId: String
+  text: String!
+  userId: String!
+  postId: String!
+  user: User
+  post: Post
 }

@@ -56,7 +56,15 @@ const resolverMap: GraphQLResolverMap = {
     reviews: (parent: IPost): IReview[] => {
       return data.reviews.filter((review: IReview) => review.postId === parent.id);
     }
-  }
+  },
+  Review: {
+    user: (parent: IReview): IUser | undefined => {
+      return data.users.find((user: IUser) => user.id === parent.userId);
+    },
+    post: (parent: IReview): IPost | undefined => {
+      return data.posts.find((post: IPost) => post.id === parent.postId);
+    }
+  },
 }
 
 export default resolverMap;
