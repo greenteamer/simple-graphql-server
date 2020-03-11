@@ -26,7 +26,7 @@ export interface IReview {
 //   [key: string]: getterFunc<string, T>,
 // }
 
-const resolverMap: GraphQLResolverMap = {
+const resolverMap = {
   Query: {
     me: (): IUser => {
       return data.users[0];
@@ -38,6 +38,13 @@ const resolverMap: GraphQLResolverMap = {
       return data.posts;
     },
     reviews: (): IReview[] => {
+      return data.reviews;
+    },
+  },
+  Mutation: {
+    addReview: (_: any, { review }: { review: IReview }): IReview[] => {
+      console.log('>>> addReview: ', review);
+      data.reviews.push(review);
       return data.reviews;
     },
   },

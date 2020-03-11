@@ -5,6 +5,10 @@ type Query {
   reviews: [Review],
 }
 
+type Mutation {
+  addReview(review: ReviewInput!): [Review]
+}
+
 type Post {
   id: ID!
   title: String!
@@ -28,4 +32,11 @@ type Review {
   postId: String!
   user: User
   post: Post
+}
+
+input ReviewInput {
+  id: ID!
+  text: String!
+  userId: String!
+  postId: String!
 }
