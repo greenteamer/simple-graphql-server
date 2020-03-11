@@ -21,7 +21,7 @@ type Post {
 
 type User {
   id: ID!
-  username: String!
+  name: String!
   posts: [Post]
   reviews: [Review]
 }

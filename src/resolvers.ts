@@ -3,7 +3,7 @@ import data from './data';
 
 export interface IUser {
   id: string;
-  username?: string;
+  name?: string;
 }
 
 export interface IPost {
