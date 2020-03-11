@@ -3,10 +3,11 @@ type Query {
   user(id: ID!): User
   posts: [Post],
   reviews: [Review],
+  post(id: ID!): Post
 }
 
 type Mutation {
-  addReview(review: ReviewInput!): [Review]
+  addReview(review: ReviewInput!): User
 }
 
 type Post {

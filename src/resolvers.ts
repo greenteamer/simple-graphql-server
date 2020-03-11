@@ -40,12 +40,16 @@ const resolverMap = {
     reviews: (): IReview[] => {
       return data.reviews;
     },
+    post: (_: any, { id }: { id: string }): IPost | undefined => {
+      console.log('>>> id: ', id);
+      return data.posts.find((post: IPost) => post.id === id);
+    },
   },
   Mutation: {
-    addReview: (_: any, { review }: { review: IReview }): IReview[] => {
+    addReview: (_: any, { review }: { review: IReview }): IUser => {
       console.log('>>> addReview: ', review);
       data.reviews.push(review);
-      return data.reviews;
+      return data.users[0];
     },
   },
   User: {
