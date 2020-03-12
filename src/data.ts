@@ -2,15 +2,15 @@ export default {
   "users": [
     {
       "id": "1",
-      "username": "username 1"
+      "name": "username 1"
     },
     {
       "id": "2",
-      "username": "username 2"
+      "name": "username 2"
     },
     {
       "id": "3",
-      "username": "username 3"
+      "name": "username 3"
     }
   ],
   "posts": [
