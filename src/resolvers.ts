@@ -6,11 +6,16 @@ export interface IUser {
   name?: string;
 }
 
+export interface IAddUserInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface INewUser {
   id?: string;
   name: string;
   email: string;
-  password: string;
   token?: string;
 }
 
@@ -53,7 +58,6 @@ const resolverMap = {
     //   }
     // }
     users(_: any, __: any, { models }: { models: any }): INewUser[] {
-      console.log(models.User);
       return models.User.findAll();
     },
     posts: (): IPost[] => {
@@ -68,11 +72,10 @@ const resolverMap = {
     }
   },
   Mutation: {
-    // mutation addUser {
-    //   addUser(user: {email: "jane@example.com", name: "Nick", password: "111"}){
-    //     name
+    // mutation signInUser {
+    //   signInUser(signInInput: {email: "jane@example.com", password: "111"}){
     //     email
-    //     password
+    //     token
     //   }
     // }
     signInUser: async (
@@ -94,9 +97,16 @@ const resolverMap = {
       const user = await models.User.findOne({ where: { email } });
       return user.dataValues;
     },
+    // mutation addUser {
+    //   addUser(user: {email: "jane@example.com", name: "Nick", password: "111"}){
+    //     name
+    //     email
+    //     password
+    //   }
+    // }
     addUser: async (
       _: any,
-      { user }: { user: INewUser },
+      { user }: { user: IAddUserInput },
       { models }: { models: any }
     ): Promise<INewUser> => {
       await models.User.create(user);
