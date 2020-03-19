@@ -1,12 +1,15 @@
 type Query {
   me: User
   user(id: ID!): User
+  users: [User],
   posts: [Post],
   reviews: [Review],
   post(id: ID!): Post
 }
 
 type Mutation {
+  signInUser(signInInput: SignInUserInput): NewUser
+  addUser(user: NewUserInput): NewUser
   addReview(review: ReviewInput!): User
 }
 
@@ -24,6 +27,24 @@ type User {
   name: String!
   posts: [Post]
   reviews: [Review]
+}
+
+input SignInUserInput {
+  email: String,
+  password: String,
+}
+
+input NewUserInput {
+  name: String
+  email: String
+  password: String
+}
+
+type NewUser {
+  name: String!
+  email: String!
+  password: String!
+  token: String
 }
 
 type Review {
