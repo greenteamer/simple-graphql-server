@@ -9,7 +9,7 @@ type Query {
 
 type Mutation {
   signInUser(signInInput: SignInUserInput): NewUser
-  addUser(user: NewUserInput): NewUser
+  addUser(user: IAddUserInput): NewUser
   addReview(review: ReviewInput!): User
 }
 
@@ -34,16 +34,15 @@ input SignInUserInput {
   password: String,
 }
 
-input NewUserInput {
-  name: String
-  email: String
-  password: String
+input IAddUserInput {
+  name: String!
+  email: String!
+  password: String!
 }
 
 type NewUser {
   name: String!
   email: String!
-  password: String!
   token: String
 }
 
