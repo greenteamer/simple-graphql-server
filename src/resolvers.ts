@@ -1,5 +1,8 @@
 import { GraphQLResolverMap } from "apollo-graphql";
 import data from "./data";
+import { getRepository } from "typeorm";
+import { User } from "./models";
+import { getJWTToken } from "./utils/token";
 
 export interface IUser {
   id: string;
@@ -12,12 +15,14 @@ export interface IAddUserInput {
   password: string;
 }
 
-export interface INewUser {
-  id?: string;
-  name: string;
-  email: string;
-  token?: string;
-}
+// export interface INewUser {
+//   id?: string;
+//   name: string;
+//   email: string;
+//   token?: string;
+// }
+
+export type INewUser = Omit<User, 'password'>;
 
 export interface ISingInInput {
   email: string;
@@ -38,11 +43,6 @@ export interface IReview {
   postId: string;
 }
 
-// type getterFunc<S, IGetterResult> = (arg: S) => IGetterResult;
-
-// interface IFether<T> {
-//   [key: string]: getterFunc<string, T>,
-// }
 
 const resolverMap = {
   Query: {
@@ -52,13 +52,9 @@ const resolverMap = {
     user: (id: string): IUser | undefined => {
       return data.users.find((user: IUser) => user.id === id);
     },
-    // {
-    //   users {
-    //     name
-    //   }
-    // }
-    users(_: any, __: any, { models }: { models: any }): INewUser[] {
-      return models.User.findAll();
+    users: async (): Promise<User[]> => {
+      const allUsers = await getRepository(User).find();
+      return allUsers;
     },
     posts: (): IPost[] => {
       return data.posts;
@@ -72,45 +68,32 @@ const resolverMap = {
     }
   },
   Mutation: {
-    // mutation signInUser {
-    //   signInUser(signInInput: {email: "jane@example.com", password: "111"}){
-    //     email
-    //     token
-    //   }
-    // }
     signInUser: async (
       _: any,
       { signInInput }: { signInInput: ISingInInput },
-      { models }: { models: any }
-    ): Promise<INewUser> => {
+    ): Promise<INewUser | null> => {
       const { email, password } = signInInput;
-      await models.User.update(
-        { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" },
-        {
-          where: {
-            email,
-            password
-          },
-          returning: true
-        }
-      );
-      const user = await models.User.findOne({ where: { email } });
-      return user.dataValues;
+      const userRepo = getRepository(User);
+      const user = await userRepo.findOne({
+        select: ['id', 'email', 'name', 'token'],
+        where: { email, password },
+      });
+      if (!user) return null;
+      const token = getJWTToken(email, password);
+      user.token = token;
+      userRepo.save(user);
+      return user;
     },
-    // mutation addUser {
-    //   addUser(user: {email: "jane@example.com", name: "Nick", password: "111"}){
-    //     name
-    //     email
-    //     password
-    //   }
-    // }
     addUser: async (
       _: any,
-      { user }: { user: IAddUserInput },
-      { models }: { models: any }
+      { user: userInput }: { user: IAddUserInput },
     ): Promise<INewUser> => {
-      await models.User.create(user);
-      return user;
+      const token = getJWTToken(userInput.email, userInput.password);
+      const userRepo = getRepository(User);
+      const user = userRepo.create({ ...userInput, token });
+      const result = await userRepo.save(user);
+      const { password, ...safeUser } = result;
+      return safeUser;
     },
     addReview: (_: any, { review }: { review: IReview }): IUser => {
       console.log(">>> addReview: ", review);

@@ -41,6 +41,7 @@ input IAddUserInput {
 }
 
 type NewUser {
+  id: Int!
   name: String!
   email: String!
   token: String
